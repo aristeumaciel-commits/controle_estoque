@@ -30,9 +30,9 @@ export default function ProductForm() {
 
   async function loadProduct() {
     const { data } = await supabase
-      .from('Produto')
+      .from('produtos')
       .select('*')
-      .eq('id_produto', id)
+      .eq('id', id)
       .single()
     if (data) setProduct(data)
   }
@@ -69,9 +69,9 @@ export default function ProductForm() {
     }
 
     if (id) {
-      await supabase.from('Produto').update(updates).eq('id_produto', id)
+      await supabase.from('produtos').update(updates).eq('id', id)
     } else {
-      await supabase.from('Produto').insert(updates)
+      await supabase.from('produtos').insert(updates)
     }
 
     setLoading(false)

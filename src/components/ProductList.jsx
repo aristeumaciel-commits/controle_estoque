@@ -18,7 +18,7 @@ export default function ProductList() {
 
   async function fetchProducts() {
     setLoading(true)
-    let query = supabase.from('Produto').select('*', { count: 'exact' })
+    let query = supabase.from('produtos').select('*', { count: 'exact' })
 
     if (search) query = query.ilike('nome_produto', `%${search}%`)
     if (brand) query = query.ilike('marca', `%${brand}%`)
@@ -33,7 +33,7 @@ export default function ProductList() {
 
   async function handleDelete(id) {
     if (!confirm('Excluir produto?')) return
-    await supabase.from('Produto').delete().eq('id_produto', id)
+    await supabase.from('produtos').delete().eq('id', id)
     fetchProducts()
   }
 
@@ -84,7 +84,7 @@ export default function ProductList() {
         </thead>
         <tbody>
           {products.map(p => (
-            <tr key={p.id_produto} className="border-t">
+            <tr key={p.id} className="border-t">
               <td className="p-2">
                 {p.foto1 && <img src={p.foto1} alt={p.nome_produto} className="w-12 h-12 object-cover" />}
               </td>
@@ -94,8 +94,8 @@ export default function ProductList() {
               <td className="p-2">{p.quantidade_estoque}</td>
               <td className="p-2">{p.ativo ? 'Sim' : 'Não'}</td>
               <td className="p-2 flex gap-2">
-                <Link to={`/editar/${p.id_produto}`} className="text-blue-500">Editar</Link>
-                <button onClick={() => handleDelete(p.id_produto)} className="text-red-500">Excluir</button>
+                <Link to={`/editar/${p.id}`} className="text-blue-500">Editar</Link>
+                <button onClick={() => handleDelete(p.id)} className="text-red-500">Excluir</button>
               </td>
             </tr>
           ))}
